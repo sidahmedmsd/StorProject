@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     oci_bind_by_name($stmt_update, ":pid", $product_id);
 
     if (oci_execute($stmt_update)) {
-        $message = '<div style="color:green">تم تحديث المنتج بنجاح!</div>';
+        $message = '<div style="color:green">Product updated successfully!</div>';
         // Refresh data
         $product['TITLE'] = $title;
         $product['DESCRIPTION'] = $desc;
@@ -70,49 +70,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $product['IMAGE'] = $imagePath;
     } else {
         $e = oci_error($stmt_update);
-        $message = '<div style="color:red">خطأ في التحديث: ' . $e['message'] . '</div>';
+        $message = '<div style="color:red">Update Error: ' . $e['message'] . '</div>';
     }
 }
 ?>
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تعديل منتج - MSD Store</title>
+    <title>Edit Product - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h2>تعديل منتج</h2>
+    <h2>Edit Product</h2>
     
     <?php if($message) echo $message; ?>
 
     <form action="edit_product.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<?php echo htmlspecialchars($product['ID']); ?>">
         
-        <label>عنوان المنتج:</label>
+        <label>Product Title:</label>
         <input type="text" name="title" value="<?php echo htmlspecialchars($product['TITLE']); ?>" required>
         
-        <label>الوصف:</label>
+        <label>Description:</label>
         <textarea name="description" required><?php echo htmlspecialchars($product['DESCRIPTION']); ?></textarea>
         
-        <label>السعر (DA):</label>
+        <label>Price (DA):</label>
         <input type="number" name="price" value="<?php echo htmlspecialchars($product['PRICE']); ?>" required>
         
-        <label style="display:block; margin:10px 0;">صورة المنتج الحالية:</label>
+        <label style="display:block; margin:10px 0;">Current Image:</label>
         <?php if($product['IMAGE']): ?>
             <img src="<?php echo htmlspecialchars($product['IMAGE']); ?>" style="max-width:100px; display:block; margin-bottom:10px;">
         <?php endif; ?>
         
-        <label style="display:block; margin:10px 0;">تغيير الصورة (اختياري):</label>
+        <label style="display:block; margin:10px 0;">Change Image (Optional):</label>
         <input type="file" name="image" accept="image/*" style="background: white; padding: 5px;">
 
-        <button type="submit">حفظ التعديلات</button>
+        <button type="submit">Save Changes</button>
     </form>
     <p style="text-align:center; margin-top:15px;">
-        <a href="my_products.php" style="color:var(--primary-color)">العودة لمنشوراتي</a>
+        <a href="my_products.php" style="color:var(--primary-color)">Back to My Products</a>
     </p>
 </div>
 

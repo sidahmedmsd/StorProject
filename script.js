@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             inputs.forEach(input => {
                 if (input.hasAttribute('required') && !input.value.trim()) {
-                    showError(input, 'هذا الحقل مطلوب');
+                    showError(input, 'This field is required');
                     isValid = false;
                 } else {
                     clearError(input);
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (input.type === 'email' && input.value.trim()) {
                     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     if (!emailPattern.test(input.value)) {
-                        showError(input, 'البريد الإلكتروني غير صحيح');
+                        showError(input, 'Invalid email address');
                         isValid = false;
                     }
                 }
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Price validation
                 if (input.name === 'price' && input.value.trim()) {
                     if (isNaN(input.value) || Number(input.value) <= 0) {
-                        showError(input, 'يرجى إدخال سعر صحيح');
+                        showError(input, 'Please enter a valid price');
                         isValid = false;
                     }
                 }

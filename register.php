@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone    = $_POST['phone'];
 
     if (empty($username) || empty($email) || empty($password) || empty($phone)) {
-        $error = "جميع الحقول مطلوبة";
+        $error = "All fields are required";
     } else {
         // Basic insert
         $sql = "INSERT INTO users (username, email, password, role, phone) VALUES (:u, :e, :p, 'user', :ph)";
@@ -25,26 +25,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         oci_bind_by_name($stmt, ":ph", $phone);
 
         if (@oci_execute($stmt)) {
-            $success = "تم إنشاء الحساب بنجاح! يمكنك الآن <a href='login.php'>تسجيل الدخول</a>";
+            $success = "Account created successfully! You can now <a href='login.php'>Login</a>";
         } else {
             $e = oci_error($stmt);
-            $error = "خطأ في إنشاء الحساب: " . $e['message'];
+            $error = "Error creating account: " . $e['message'];
         }
     }
 }
 ?>
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إنشاء حساب - MSD Store</title>
+    <title>Create Account - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h2>إنشاء حساب جديد</h2>
+    <h2>Create New Account</h2>
     
     <?php if($error): ?>
         <div style="color: red; text-align: center; margin-bottom: 15px;"><?php echo $error; ?></div>
@@ -55,14 +55,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php endif; ?>
 
     <form action="register.php" method="post" novalidate>
-        <input type="text" name="username" placeholder="اسم المستخدم" required>
-        <input type="email" name="email" placeholder="البريد الإلكتروني" required>
-        <input type="text" name="phone" placeholder="رقم الهاتف" required>
-        <input type="password" name="password" placeholder="كلمة المرور" required>
-        <button type="submit">تسجيل</button>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Register</button>
     </form>
     <p style="text-align:center; margin-top:15px;">
-        لديك حساب بالفعل؟ <a href="login.php" style="color:var(--primary-color)">سجل الدخول</a>
+        Already have an account? <a href="login.php" style="color:var(--primary-color)">Login</a>
     </p>
 </div>
 

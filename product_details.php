@@ -32,7 +32,7 @@ oci_bind_by_name($stmt_imgs, ":pid", $product_id);
 $images_found = @oci_execute($stmt_imgs);
 ?>
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,13 +104,13 @@ $images_found = @oci_execute($stmt_imgs);
         <h1 style="margin: 0; color: var(--primary-color);"><a href="index.php" style="text-decoration:none; color:inherit;">MSD Store</a></h1>
         <nav>
             <?php if (isset($_SESSION['username'])): ?>
-                <span>مرحباً, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                <a href="index.php" class="nav-link">الرئيسية</a>
-                <a href="my_products.php" class="nav-link">منشوراتي</a>
-                <a href="logout.php" class="btn-logout">خروج</a>
+                <span>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                <a href="index.php" class="nav-link">Home</a>
+                <a href="my_products.php" class="nav-link">My Products</a>
+                <a href="logout.php" class="btn-logout">Logout</a>
             <?php else: ?>
-                <a href="index.php" class="nav-link">الرئيسية</a>
-                <a href="login.php" class="nav-link">دخول</a>
+                <a href="index.php" class="nav-link">Home</a>
+                <a href="login.php" class="nav-link">Login</a>
             <?php endif; ?>
         </nav>
     </div>
@@ -152,14 +152,12 @@ $images_found = @oci_execute($stmt_imgs);
             </p>
 
             <div class="seller-info">
-                <h4>معلومات البائع:</h4>
+                <h4>Seller Info:</h4>
                 <p>👤 <strong><?php echo htmlspecialchars($product['SELLER_NAME']); ?></strong></p>
                 <?php if (!empty($product['PHONE'])): ?>
-                    <a href="tel:<?php echo htmlspecialchars($product['PHONE']); ?>" class="btn-add" style="display:block; text-align:center; margin-top:10px; background:#3498db;">
-                        📞 اتصل: <?php echo htmlspecialchars($product['PHONE']); ?>
-                    </a>
+                    <p>📞 <strong><?php echo htmlspecialchars($product['PHONE']); ?></strong></p>
                 <?php else: ?>
-                    <p>🚫 لا يوجد رقم هاتف</p>
+                    <p>🚫 No phone number available</p>
                 <?php endif; ?>
             </div>
         </div>

@@ -3,16 +3,30 @@ session_start();
 include 'db.php';
 
 // Fetch products with user info
-$sql = "SELECT p.*, u.phone, u.username as seller_name FROM products p JOIN users u ON p.user_id = u.id WHERE p.approved = 1";
-$stmt = oci_parse($conn, $sql);
+$search = "";
+if (isset($_GET['q'])) {
+    $search = $_GET['q'];
+    $sql = "SELECT p.*, u.phone, u.username as seller_name 
+            FROM products p 
+            JOIN users u ON p.user_id = u.id 
+            WHERE p.approved = 1 
+            AND (UPPER(p.title) LIKE UPPER(:search_term) OR UPPER(p.description) LIKE UPPER(:search_term))";
+    $stmt = oci_parse($conn, $sql);
+    $search_term = "%" . $search . "%";
+    oci_bind_by_name($stmt, ":search_term", $search_term);
+} else {
+    $sql = "SELECT p.*, u.phone, u.username as seller_name FROM products p JOIN users u ON p.user_id = u.id WHERE p.approved = 1";
+    $stmt = oci_parse($conn, $sql);
+}
+
 oci_execute($stmt);
 ?>
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المتجر - MSD Store</title>
+    <title>Store - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,24 +34,30 @@ oci_execute($stmt);
 <header style="background: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;">
     <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
         <h1 style="margin: 0; color: var(--primary-color);">MSD Store</h1>
+        
+        <form action="index.php" method="get" style="flex-grow: 1; max-width: 400px; margin: 0 20px;">
+            <input type="text" name="q" placeholder="Search..." value="<?php echo htmlspecialchars(isset($_GET['q']) ? $_GET['q'] : ''); ?>" style="padding:8px 20px; width:100%; border:1px solid #ddd; border-radius:50px; outline:none;">
+        </form>
         <nav>
             <?php if (isset($_SESSION['username'])): ?>
-                <span>مرحباً, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                <span>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
                 <?php if ($_SESSION['role'] == 'admin'): ?>
-                    <a href="admin.php" class="nav-link">لوحة التحكم</a>
+                    <a href="admin.php" class="nav-link">Dashboard</a>
                 <?php endif; ?>
-                <a href="my_products.php" class="nav-link">منشوراتي</a>
-                <a href="add_product.php" class="btn-add">أضف منتج</a>
-                <a href="logout.php" class="btn-logout">خروج</a>
+                <a href="my_products.php" class="nav-link">My Products</a>
+                <a href="add_product.php" class="btn-add">Add Product</a>
+                <a href="logout.php" class="btn-logout">Logout</a>
             <?php else: ?>
-                <a href="login.php" class="nav-link">دخول</a>
-                <a href="register.php" class="nav-link">تسجيل</a>
+                <a href="login.php" class="nav-link">Login</a>
+                <a href="register.php" class="nav-link">Register</a>
             <?php endif; ?>
         </nav>
     </div>
 </header>
 
-<h2 style="text-align:center;">المنتوجات المتاحة</h2>
+<h2 style="text-align:center;">Available Products</h2>
+
+
 
 <div class="products-wrapper">
     <?php
@@ -49,19 +69,17 @@ oci_execute($stmt);
             echo '</a>';
         }
         echo '<h3><a href="product_details.php?id=' . $row['ID'] . '" style="text-decoration:none; color:inherit;">' . htmlspecialchars($row['TITLE']) . '</a></h3>';
-        echo '<p style="font-size: 0.9em; color: #777;">البائع: ' . htmlspecialchars($row['SELLER_NAME']) . '</p>';
+        echo '<p style="font-size: 0.9em; color: #777;">Seller: ' . htmlspecialchars($row['SELLER_NAME']) . '</p>';
         echo '<p style="margin: 10px 0; flex-grow: 1;">' . htmlspecialchars($row['DESCRIPTION']) . '</p>';
         echo '<strong>' . htmlspecialchars($row['PRICE']) . ' DA</strong>';
         
-        echo '<a href="product_details.php?id=' . $row['ID'] . '" class="btn-add" style="display:block; text-align:center; margin-top:10px; background:#2c3e50;">📄 تفاصيل</a>';
+        echo '<a href="product_details.php?id=' . $row['ID'] . '" class="btn-add" style="display:block; text-align:center; margin-top:10px; background:#2c3e50;">📄 Details</a>';
 
-        if (!empty($row['PHONE'])) {
-            echo '<a href="tel:' . htmlspecialchars($row['PHONE']) . '" class="btn-add" style="display:block; text-align:center; margin-top:10px; background:#3498db;">📞 اتصل: ' . htmlspecialchars($row['PHONE']) . '</a>';
-        }
+
 
         // Admin Delete Button
         if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
-            echo '<a href="delete_product.php?id=' . $row['ID'] . '" onclick="return confirm(\'أدمن: هل أنت متأكد من حذف هذا المنتج؟\')" class="btn-logout" style="display:block; text-align:center; margin-top:5px; background:red;">🗑️ حذف (Admin)</a>';
+            echo '<a href="delete_product.php?id=' . $row['ID'] . '" onclick="return confirm(\'Admin: Are you sure you want to delete this product?\')" class="btn-logout" style="display:block; text-align:center; margin-top:5px; background:red;">🗑️ Delete (Admin)</a>';
         }
         
         echo '</div>';
