@@ -65,7 +65,7 @@ if (!oci_execute($stmt)) {
     <div class="products-wrapper">
         <?php
         $has_products = false;
-        while ($row = oci_fetch_assoc($stmt)) {
+        while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_LOBS)) {
             $has_products = true;
             echo '<div class="product">';
             

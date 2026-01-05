@@ -17,10 +17,20 @@ $sql = "SELECT p.*, u.phone, u.username as seller_name
 $stmt = oci_parse($conn, $sql);
 oci_bind_by_name($stmt, ":pid", $product_id);
 oci_execute($stmt);
-$product = oci_fetch_assoc($stmt);
+$product = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_LOBS);
 
 if (!$product) {
     die("Product not found.");
+}
+
+// Security: If not approved, only admin or owner can see it
+if ($product['APPROVED'] == 0) {
+    $is_admin = (isset($_SESSION['role']) && $_SESSION['role'] == 'admin');
+    $is_owner = (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $product['USER_ID']);
+    
+    if (!$is_admin && !$is_owner) {
+        die("This product is pending approval.");
+    }
 }
 
 // Fetch Product Images
@@ -127,7 +137,7 @@ $images_found = @oci_execute($stmt_imgs);
                 if (!empty($product['IMAGE'])) $images[] = $product['IMAGE'];
                 
                 if ($images_found) {
-                    while ($imgRow = oci_fetch_assoc($stmt_imgs)) {
+                    while ($imgRow = oci_fetch_array($stmt_imgs, OCI_ASSOC + OCI_RETURN_LOBS)) {
                         $images[] = $imgRow['IMAGE_PATH'];
                     }
                 }

@@ -71,7 +71,7 @@ oci_execute($stmt);
 
 <div class="products-wrapper">
     <?php
-    while ($row = oci_fetch_assoc($stmt)) {
+    while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_LOBS)) {
         echo '<div class="product">';
         if (!empty($row['IMAGE']) && file_exists($row['IMAGE'])) {
             echo '<a href="product_details.php?id=' . $row['ID'] . '">';

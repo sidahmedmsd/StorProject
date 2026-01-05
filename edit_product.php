@@ -25,7 +25,7 @@ $sql = "SELECT * FROM products WHERE id = :pid";
 $stmt = oci_parse($conn, $sql);
 oci_bind_by_name($stmt, ":pid", $product_id);
 oci_execute($stmt);
-$product = oci_fetch_assoc($stmt);
+$product = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_LOBS);
 
 if (!$product) {
     die("Product not found.");

@@ -54,7 +54,7 @@ oci_execute($stmt);
     <div class="products-list">
         <?php
         $count = 0;
-        while ($row = oci_fetch_assoc($stmt)) {
+        while ($row = oci_fetch_array($stmt, OCI_ASSOC + OCI_RETURN_LOBS)) {
             $count++;
             echo '<div class="product" style="flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">';
             echo '<div>';
@@ -64,7 +64,8 @@ oci_execute($stmt);
             echo '<h3>' . htmlspecialchars($row['TITLE']) . '</h3>';
             echo '<p>' . htmlspecialchars($row['DESCRIPTION']) . ' - <strong>' . htmlspecialchars($row['PRICE']) . ' DA</strong></p>';
             echo '</div>';
-            echo '<div style="display:flex; gap:10px;">';
+            echo '<div style="display:flex; gap:10px; align-items:center;">';
+            echo '<a href="product_details.php?id=' . $row['ID'] . '" target="_blank" style="color:#3498db; text-decoration:none; font-weight:bold;">View</a>';
             echo '<a href="admin.php?approve=' . $row['ID'] . '" style="background:#2ecc71; color:white; padding:5px 10px; border-radius:5px; text-decoration:none;">Approve</a>';
             echo '<a href="admin.php?delete=' . $row['ID'] . '" style="background:#e74c3c; color:white; padding:5px 10px; border-radius:5px; text-decoration:none;">Reject</a>';
             echo '</div>';
