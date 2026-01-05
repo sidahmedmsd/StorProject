@@ -11,6 +11,8 @@
     --input-border: #ddd;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --radius: 12px;
+    --secondary-text: #666;
+    --hover-bg: #f0f0f0;
 }
 
 body.dark-mode {
@@ -22,6 +24,8 @@ body.dark-mode {
     --input-bg: #3d3d3d;
     --input-border: #555;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --secondary-text: #aaa;
+    --hover-bg: #333;
 }
 
 * {
@@ -39,6 +43,21 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+h3,
+label {
+    color: var(--text-color);
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    transition: background 0.3s ease, transform 0.3s ease;
 }
 
 /* ... rest of css ... */
@@ -176,7 +195,7 @@ button:active {
 }
 
 .nav-link:hover {
-    background: #f0f0f0;
+    background: var(--hover-bg);
 }
 
 /* Product Image */
@@ -222,7 +241,7 @@ button:active {
 }
 
 .product p {
-    color: #666;
+    color: var(--secondary-text);
     margin-bottom: 15px;
     flex-grow: 1;
 }

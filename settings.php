@@ -161,14 +161,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     
     <?php if($message): ?>
-        <div style="color: green; text-align: center; margin-bottom: 15px; background: #e8f5e9; padding: 10px; border-radius: 4px;"><?php echo $message; ?></div>
+        <div style="color: #27ae60; text-align: center; margin-bottom: 15px; background: rgba(39, 174, 96, 0.1); padding: 10px; border-radius: 4px; border: 1px solid #27ae60;"><?php echo $message; ?></div>
     <?php endif; ?>
 
     <?php if($error): ?>
-        <div style="color: red; text-align: center; margin-bottom: 15px; background: #ffebee; padding: 10px; border-radius: 4px;"><?php echo $error; ?></div>
+        <div style="color: var(--error-color); text-align: center; margin-bottom: 15px; background: rgba(231, 76, 60, 0.1); padding: 10px; border-radius: 4px; border: 1px solid var(--error-color);"><?php echo $error; ?></div>
     <?php endif; ?>
 
-    <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;">
+    <div class="card">
         <h3>Profile Information</h3>
         <form action="settings.php" method="post">
             <label>Username:</label>
@@ -184,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 
-    <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <div class="card">
         <h3>Change Password</h3>
         <form action="settings.php" method="post">
             <label>Current Password:</label>
