@@ -34,16 +34,26 @@ if (!oci_execute($stmt)) {
 </head>
 <body>
 
-<header style="background: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;">
-    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-        <h1 style="margin: 0; color: var(--primary-color);">MSD Store - My Products</h1>
-        <nav>
-            <span>Welcome, <?php echo htmlspecialchars($username); ?></span>
+<header>
+    <div class="header-inner">
+        <div class="header-logo">
+            <h1><a href="index.php" style="text-decoration:none; color:inherit;">MSD Store</a></h1>
+            <a href="settings.php" class="nav-link" title="Settings" style="font-size: 1.2rem;">⚙️</a>
+        </div>
+        
+        <div class="header-search">
+            <form action="index.php" method="get">
+                <input type="text" name="q" placeholder="Search products..." value="<?php echo htmlspecialchars(isset($_GET['q']) ? $_GET['q'] : ''); ?>">
+            </form>
+        </div>
+
+        <nav class="header-nav">
+            <span class="user-welcome">Hi, <?php echo htmlspecialchars($username); ?></span>
             <a href="index.php" class="nav-link">Home</a>
             <?php if ($_SESSION['role'] == 'admin'): ?>
-                <a href="admin.php" class="nav-link">Dashboard</a>
+                <a href="admin.php" class="nav-link" title="Dashboard">Dashboard</a>
             <?php endif; ?>
-            <a href="add_product.php" class="btn-add">Add Product</a>
+            <a href="add_product.php" class="btn-add">+ Add</a>
             <a href="logout.php" class="btn-logout">Logout</a>
         </nav>
     </div>

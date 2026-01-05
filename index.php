@@ -31,25 +31,35 @@ oci_execute($stmt);
 </head>
 <body>
 
-<header style="background: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;">
-    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-        <h1 style="margin: 0; color: var(--primary-color);">MSD Store</h1>
-        
-        <form action="index.php" method="get" style="flex-grow: 1; max-width: 400px; margin: 0 20px;">
-            <input type="text" name="q" placeholder="Search..." value="<?php echo htmlspecialchars(isset($_GET['q']) ? $_GET['q'] : ''); ?>" style="padding:8px 20px; width:100%; border:1px solid #ddd; border-radius:50px; outline:none;">
-        </form>
-        <nav>
+<header>
+    <div class="header-inner">
+        <div class="header-logo">
+            <h1><a href="index.php" style="text-decoration:none; color:inherit;">MSD Store</a></h1>
             <?php if (isset($_SESSION['username'])): ?>
-                <span>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                <a href="settings.php" class="nav-link" title="Settings" style="font-size: 1.2rem;">⚙️</a>
+            <?php endif; ?>
+        </div>
+        
+        <div class="header-search">
+            <form action="index.php" method="get">
+                <input type="text" name="q" placeholder="Search products..." value="<?php echo htmlspecialchars(isset($_GET['q']) ? $_GET['q'] : ''); ?>">
+            </form>
+        </div>
+
+        <nav class="header-nav">
+            <?php if (isset($_SESSION['username'])): ?>
+                <span class="user-welcome">Hi, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                
                 <?php if ($_SESSION['role'] == 'admin'): ?>
-                    <a href="admin.php" class="nav-link">Dashboard</a>
+                    <a href="admin.php" class="nav-link" title="Dashboard">Dashboard</a>
                 <?php endif; ?>
+                
                 <a href="my_products.php" class="nav-link">My Products</a>
-                <a href="add_product.php" class="btn-add">Add Product</a>
+                <a href="add_product.php" class="btn-add">+ Product</a>
                 <a href="logout.php" class="btn-logout">Logout</a>
             <?php else: ?>
                 <a href="login.php" class="nav-link">Login</a>
-                <a href="register.php" class="nav-link">Register</a>
+                <a href="register.php" class="btn-add">Register</a>
             <?php endif; ?>
         </nav>
     </div>

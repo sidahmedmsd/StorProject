@@ -1,8 +1,8 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-include 'db.php';
 session_start();
+include 'db.php';
 
 $error = '';
 
@@ -13,18 +13,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($username) || empty($password)) {
         $error = "Please enter username and password";
     } else {
-        $sql = "SELECT * FROM users WHERE username = :u AND password = :p";
+        $sql = "SELECT * FROM users WHERE username = :u";
         $stmt = oci_parse($conn, $sql);
         oci_bind_by_name($stmt, ":u", $username);
-        oci_bind_by_name($stmt, ":p", $password);
         oci_execute($stmt);
 
         if ($row = oci_fetch_assoc($stmt)) {
-            $_SESSION['user_id'] = $row['ID']; 
-            $_SESSION['username'] = $row['USERNAME'];
-            $_SESSION['role'] = $row['ROLE']; 
-            header("Location: index.php"); 
-            exit();
+            $db_password = $row['PASSWORD'];
+            $user_id = $row['ID'];
+            
+            // 1. Check if password matches hash
+            if (password_verify($password, $db_password)) {
+                // Password is correct
+                $_SESSION['user_id'] = $row['ID']; 
+                $_SESSION['username'] = $row['USERNAME'];
+                $_SESSION['role'] = $row['ROLE']; 
+                header("Location: index.php"); 
+                exit();
+            } 
+            // 2. Fallback: Check if it's an old plain text password
+            elseif ($password === $db_password) {
+                // Password is correct (legacy), now UPGRADE IT
+                $new_hash = password_hash($password, PASSWORD_DEFAULT);
+                $update_sql = "UPDATE users SET password = :h WHERE id = :id";
+                $update_stmt = oci_parse($conn, $update_sql);
+                oci_bind_by_name($update_stmt, ":h", $new_hash);
+                oci_bind_by_name($update_stmt, ":id", $user_id);
+                oci_execute($update_stmt);
+                oci_commit($conn);
+
+                $_SESSION['user_id'] = $row['ID']; 
+                $_SESSION['username'] = $row['USERNAME'];
+                $_SESSION['role'] = $row['ROLE']; 
+                header("Location: index.php"); 
+                exit();
+            } else {
+                $error = "Invalid username or password";
+            }
         } else {
             $error = "Invalid username or password";
         }

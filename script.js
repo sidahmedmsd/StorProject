@@ -95,4 +95,26 @@ document.addEventListener('DOMContentLoaded', function () {
             product.style.transform = 'translateY(0)';
         }, index * 100);
     });
+    // Dark Mode Logic
+    const toggleSwitch = document.querySelector('#darkModeToggle');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme) {
+        document.body.classList.add(currentTheme);
+        if (currentTheme === 'dark-mode' && toggleSwitch) {
+            toggleSwitch.checked = true;
+        }
+    }
+
+    if (toggleSwitch) {
+        toggleSwitch.addEventListener('change', function (e) {
+            if (e.target.checked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light-mode');
+            }
+        });
+    }
 });
