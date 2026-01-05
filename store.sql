@@ -16,7 +16,7 @@ CREATE TABLE products (
     image VARCHAR2(255),
     approved NUMBER(1) DEFAULT 0,
     CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);Tables
+);
 
 
 CREATE TABLE product_images (
@@ -26,4 +26,4 @@ CREATE TABLE product_images (
     CONSTRAINT fk_product_images FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
-INSERT INTO users (username, email, password, role) VALUES ('admin', 'admin@example.com', 'admin', 'admin');
+INSERT INTO users (username, email, password, role) VALUES ('admin', 'admin@example.com', 'admin', 'superadmin');

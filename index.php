@@ -50,7 +50,7 @@ oci_execute($stmt);
             <?php if (isset($_SESSION['username'])): ?>
                 <span class="user-welcome">Hi, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
                 
-                <?php if ($_SESSION['role'] == 'admin'): ?>
+                <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'superadmin'): ?>
                     <a href="admin.php" class="nav-link" title="Dashboard">Dashboard</a>
                 <?php endif; ?>
                 
@@ -87,8 +87,8 @@ oci_execute($stmt);
 
 
 
-        // Admin Delete Button
-        if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
+        // Admin/SuperAdmin Delete Button
+        if (isset($_SESSION['role']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'superadmin')) {
             echo '<a href="delete_product.php?id=' . $row['ID'] . '" onclick="return confirm(\'Admin: Are you sure you want to delete this product?\')" class="btn-logout" style="display:block; text-align:center; margin-top:5px; background:red;">🗑️ Delete (Admin)</a>';
         }
         

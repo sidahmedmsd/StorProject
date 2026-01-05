@@ -32,7 +32,7 @@ if (!$product) {
 }
 
 // Check permission
-if ($role != 'admin' && $product['USER_ID'] != $user_id) {
+if ($role != 'admin' && $role != 'superadmin' && $product['USER_ID'] != $user_id) {
     die("Unauthorized access.");
 }
 

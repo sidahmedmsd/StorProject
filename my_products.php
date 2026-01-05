@@ -50,7 +50,7 @@ if (!oci_execute($stmt)) {
         <nav class="header-nav">
             <span class="user-welcome">Hi, <?php echo htmlspecialchars($username); ?></span>
             <a href="index.php" class="nav-link">Home</a>
-            <?php if ($_SESSION['role'] == 'admin'): ?>
+            <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'superadmin'): ?>
                 <a href="admin.php" class="nav-link" title="Dashboard">Dashboard</a>
             <?php endif; ?>
             <a href="add_product.php" class="btn-add">+ Add</a>

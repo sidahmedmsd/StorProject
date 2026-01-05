@@ -12,7 +12,7 @@ if (isset($_GET['id'])) {
     $user_id = $_SESSION['user_id'];
     $role = $_SESSION['role'];
 
-    if ($role == 'admin') {
+    if ($role == 'admin' || $role == 'superadmin') {
         // Admin can delete any product
         $sql = "DELETE FROM products WHERE id = :pid";
         $stmt = oci_parse($conn, $sql);
