@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'db.php';
 
 // Check if admin or superadmin
@@ -70,7 +69,7 @@ oci_execute($stmt_users);
     <title>Dashboard - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="<?php echo $theme_class; ?>">
 
 <div class="container" style="max-width: 800px;">
     <div style="display:flex; justify-content:space-between; align-items:center;">

@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-session_start();
 include 'db.php';
 
 // Ensure user is logged in
@@ -125,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Account Settings - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="<?php echo $theme_class; ?>">
 
 <header>
     <div class="header-inner">

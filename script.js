@@ -97,24 +97,30 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     // Dark Mode Logic
     const toggleSwitch = document.querySelector('#darkModeToggle');
-    const currentTheme = localStorage.getItem('theme');
 
-    if (currentTheme) {
-        document.body.classList.add(currentTheme);
-        if (currentTheme === 'dark-mode' && toggleSwitch) {
+    // Initialize toggle state from body class (set by server via PHP/Cookie)
+    if (toggleSwitch) {
+        if (document.body.classList.contains('dark-mode')) {
             toggleSwitch.checked = true;
         }
-    }
 
-    if (toggleSwitch) {
         toggleSwitch.addEventListener('change', function (e) {
+            const theme = e.target.checked ? 'dark-mode' : 'light-mode';
+
             if (e.target.checked) {
                 document.body.classList.add('dark-mode');
-                localStorage.setItem('theme', 'dark-mode');
             } else {
                 document.body.classList.remove('dark-mode');
-                localStorage.setItem('theme', 'light-mode');
             }
+
+            // Sync with server (updates DB if logged in, otherwise just sets cookie)
+            fetch('update_theme.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ theme: theme })
+            }).then(response => {
+                if (!response.ok) console.error('Failed to sync theme with server');
+            }).catch(err => console.error('Theme sync error:', err));
         });
     }
 });

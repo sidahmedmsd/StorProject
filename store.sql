@@ -4,7 +4,8 @@ CREATE TABLE users (
     email VARCHAR2(100) NOT NULL UNIQUE,
     password VARCHAR2(255) NOT NULL,
     phone VARCHAR2(20),
-    role VARCHAR2(20) DEFAULT 'user'
+    role VARCHAR2(20) DEFAULT 'user',
+    theme VARCHAR2(20) DEFAULT 'light-mode'
 );
 
 CREATE TABLE products (

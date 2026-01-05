@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'db.php';
 
 // Ensure user is logged in
@@ -100,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Add Product - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="<?php echo $theme_class; ?>">
 
 <div class="container">
     <h2>Add Product</h2>

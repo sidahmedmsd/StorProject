@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'db.php';
 
 if (!isset($_GET['id'])) {
@@ -53,10 +52,11 @@ $images_found = @oci_execute($stmt_imgs);
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            background: white;
+            background: var(--card-bg);
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
+            color: var(--text-color);
         }
         .gallery {
             flex: 1;
@@ -99,17 +99,17 @@ $images_found = @oci_execute($stmt_imgs);
             margin: 10px 0;
         }
         .seller-info {
-            background: #f9f9f9;
+            background: var(--hover-bg);
             padding: 15px;
             border-radius: 5px;
             margin-top: 20px;
-            border: 1px solid #eee;
+            border: 1px solid var(--input-border);
         }
     </style>
 </head>
-<body>
+<body class="<?php echo $theme_class; ?>">
 
-<header style="background: white; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;">
+<header style="background: var(--card-bg); padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px;">
     <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
         <h1 style="margin: 0; color: var(--primary-color);"><a href="index.php" style="text-decoration:none; color:inherit;">MSD Store</a></h1>
         <nav>
@@ -157,7 +157,7 @@ $images_found = @oci_execute($stmt_imgs);
             <h2><?php echo htmlspecialchars($product['TITLE']); ?></h2>
             <div class="price-tag"><?php echo htmlspecialchars($product['PRICE']); ?> DA</div>
             
-            <p style="line-height: 1.6; color: #555;">
+            <p style="line-height: 1.6; color: var(--secondary-text);">
                 <?php echo nl2br(htmlspecialchars($product['DESCRIPTION'])); ?>
             </p>
 

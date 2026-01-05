@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'db.php';
 
 // Fetch products with user info
@@ -29,7 +28,7 @@ oci_execute($stmt);
     <title>Store - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="<?php echo $theme_class; ?>">
 
 <header>
     <div class="header-inner">
@@ -79,7 +78,7 @@ oci_execute($stmt);
             echo '</a>';
         }
         echo '<h3><a href="product_details.php?id=' . $row['ID'] . '" style="text-decoration:none; color:inherit;">' . htmlspecialchars($row['TITLE']) . '</a></h3>';
-        echo '<p style="font-size: 0.9em; color: #777;">Seller: ' . htmlspecialchars($row['SELLER_NAME']) . '</p>';
+        echo '<p style="font-size: 0.9em; color: var(--secondary-text);">Seller: ' . htmlspecialchars($row['SELLER_NAME']) . '</p>';
         echo '<p style="margin: 10px 0; flex-grow: 1;">' . htmlspecialchars($row['DESCRIPTION']) . '</p>';
         echo '<strong>' . htmlspecialchars($row['PRICE']) . ' DA</strong>';
         

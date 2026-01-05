@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'db.php';
 
 // Ensure user is logged in
@@ -32,7 +31,7 @@ if (!oci_execute($stmt)) {
     <title>My Products - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="<?php echo $theme_class; ?>">
 
 <header>
     <div class="header-inner">

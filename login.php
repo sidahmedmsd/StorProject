@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-session_start();
 include 'db.php';
 
 $error = '';
@@ -28,6 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $row['ID']; 
                 $_SESSION['username'] = $row['USERNAME'];
                 $_SESSION['role'] = $row['ROLE']; 
+                $_SESSION['theme'] = $row['THEME'] ?? 'light-mode';
+                
+                // Sync cookie with account preference on login
+                setcookie('theme', $_SESSION['theme'], time() + (30 * 24 * 60 * 60), "/");
+                
                 header("Location: index.php"); 
                 exit();
             } 
@@ -45,6 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $row['ID']; 
                 $_SESSION['username'] = $row['USERNAME'];
                 $_SESSION['role'] = $row['ROLE']; 
+                $_SESSION['theme'] = $row['THEME'] ?? 'light-mode';
+                
+                // Sync cookie with account preference on login
+                setcookie('theme', $_SESSION['theme'], time() + (30 * 24 * 60 * 60), "/");
+                
                 header("Location: index.php"); 
                 exit();
             } else {
@@ -64,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="<?php echo $theme_class; ?>">
 
 <div class="container">
     <h2>Login</h2>

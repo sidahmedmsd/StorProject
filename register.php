@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-session_start();
 include 'db.php';
 
 $error = '';
@@ -58,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Create Account - MSD Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="<?php echo $theme_class; ?>">
 
 <div class="container">
     <h2>Create New Account</h2>
