@@ -1,6 +1,13 @@
 <?php
 include 'db.php';
 
+
+// If user is already logged in, redirect to index
+if (isset($_SESSION['username'])) {
+    header("Location: index.php");
+    exit();
+}
+
 $error = '';
 $success = '';
 
