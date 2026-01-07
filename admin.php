@@ -29,27 +29,7 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// Handle Make Admin (Admin and Super Admin)
-if (isset($_GET['make_admin']) && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'superadmin')) {
-    $user_id = $_GET['make_admin'];
-    $sql = "UPDATE users SET role = 'admin' WHERE id = :id";
-    $stmt = oci_parse($conn, $sql);
-    oci_bind_by_name($stmt, ":id", $user_id);
-    oci_execute($stmt);
-    header("Location: admin.php");
-    exit();
-}
 
-// Handle Remove Admin (Super Admin only)
-if (isset($_GET['remove_admin']) && $_SESSION['role'] === 'superadmin') {
-    $user_id = $_GET['remove_admin'];
-    $sql = "UPDATE users SET role = 'user' WHERE id = :id";
-    $stmt = oci_parse($conn, $sql);
-    oci_bind_by_name($stmt, ":id", $user_id);
-    oci_execute($stmt);
-    header("Location: admin.php");
-    exit();
-}
 
 // Fetch Pending Products
 $sql = "SELECT * FROM products WHERE approved = 0";
@@ -57,9 +37,7 @@ $stmt = oci_parse($conn, $sql);
 oci_execute($stmt);
 
 // Fetch All Users
-$sql_users = "SELECT * FROM users ORDER BY id DESC";
-$stmt_users = oci_parse($conn, $sql_users);
-oci_execute($stmt_users);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +52,11 @@ oci_execute($stmt_users);
 <div class="container" style="max-width: 800px;">
     <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2>Products Pending Approval</h2>
-        <a href="index.php">Back to Store</a>
+        <div>
+            <a href="admin_users.php" class="btn-edit" style="margin-right:10px;">👥 Users</a>
+            <a href="admin_stats.php" class="btn-edit" style="margin-right:10px;">📊 Statistics</a>
+            <a href="index.php" class="btn-logout" style="background:#555;">Back to Store</a>
+        </div>
     </div>
 
     <div class="products-list">
@@ -104,36 +86,7 @@ oci_execute($stmt_users);
         ?>
     </div>
 
-    <?php if ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'superadmin'): ?>
-    <hr style="margin: 40px 0; border: 0; border-top: 1px solid #eee;">
 
-    <h2>Users Management</h2>
-    <div class="users-list">
-        <?php
-        while ($user = oci_fetch_array($stmt_users, OCI_ASSOC)) {
-            echo '<div class="product" style="flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 10px;">';
-            echo '<div>';
-            echo '<h3>' . htmlspecialchars($user['USERNAME']) . '</h3>';
-            echo '<p>' . htmlspecialchars($user['EMAIL']) . ' - Role: <strong>' . htmlspecialchars($user['ROLE']) . '</strong></p>';
-            echo '</div>';
-            echo '<div style="display:flex; gap:10px; align-items:center;">';
-            if ($user['ROLE'] === 'user') {
-                echo '<a href="admin.php?make_admin=' . $user['ID'] . '" style="background:#3498db; color:white; padding:5px 10px; border-radius:5px; text-decoration:none;" onclick="return confirm(\'Are you sure you want to make this user an admin?\')">Make Admin</a>';
-            } elseif ($user['ROLE'] === 'admin') {
-                if ($_SESSION['role'] === 'superadmin') {
-                    echo '<a href="admin.php?remove_admin=' . $user['ID'] . '" style="background:#f39c12; color:white; padding:5px 10px; border-radius:5px; text-decoration:none;" onclick="return confirm(\'Are you sure you want to remove admin privileges from this user?\')">Remove Admin</a>';
-                } else {
-                    echo '<span style="color:#2ecc71; font-weight:bold;">Admin</span>';
-                }
-            } elseif ($user['ROLE'] === 'superadmin') {
-                echo '<span style="color:#9b59b6; font-weight:bold;">Super Admin</span>';
-            }
-            echo '</div>';
-            echo '</div>';
-        }
-        ?>
-    </div>
-    <?php endif; ?>
 </div>
 
 </body>

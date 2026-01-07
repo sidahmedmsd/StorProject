@@ -5,7 +5,9 @@ CREATE TABLE users (
     password VARCHAR2(255) NOT NULL,
     phone VARCHAR2(20),
     role VARCHAR2(20) DEFAULT 'user',
-    theme VARCHAR2(20) DEFAULT 'light-mode'
+    theme VARCHAR2(20) DEFAULT 'light-mode',
+    created_at DATE DEFAULT SYSDATE,
+    promoted_by NUMBER DEFAULT NULL
 );
 
 CREATE TABLE products (
@@ -16,6 +18,7 @@ CREATE TABLE products (
     price NUMBER(10, 2) NOT NULL,
     image VARCHAR2(255),
     approved NUMBER(1) DEFAULT 0,
+    created_at DATE DEFAULT SYSDATE,
     CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -25,6 +28,12 @@ CREATE TABLE product_images (
     product_id NUMBER NOT NULL,
     image_path VARCHAR2(255) NOT NULL,
     CONSTRAINT fk_product_images FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+CREATE TABLE daily_visits (
+    visit_date DATE DEFAULT TRUNC(SYSDATE),
+    visit_count NUMBER DEFAULT 0,
+    CONSTRAINT pk_daily_visits PRIMARY KEY (visit_date)
 );
 
 INSERT INTO users (username, email, password, role) VALUES ('admin', 'admin@example.com', 'admin', 'superadmin');

@@ -1,6 +1,34 @@
 <?php
 include 'db.php';
 
+// Track Visits (Once per session per day)
+$today_date = date('Y-m-d');
+if (!isset($_SESSION['visit_counted_date']) || $_SESSION['visit_counted_date'] !== $today_date) {
+    
+    // Oracle TRUNC(SYSDATE) matches strictly date part, but easier to use MERGE or checking existence
+    $check_sql = "SELECT count(*) AS C FROM daily_visits WHERE visit_date = TRUNC(SYSDATE)";
+    $check_stmt = oci_parse($conn, $check_sql);
+    oci_execute($check_stmt);
+    $check_row = oci_fetch_assoc($check_stmt);
+
+    if ($check_row['C'] == 0) {
+        // Insert new day
+        $ins_sql = "INSERT INTO daily_visits (visit_date, visit_count) VALUES (TRUNC(SYSDATE), 1)";
+        $ins_stmt = oci_parse($conn, $ins_sql);
+        oci_execute($ins_stmt);
+    } else {
+        // Update count
+        $upd_sql = "UPDATE daily_visits SET visit_count = visit_count + 1 WHERE visit_date = TRUNC(SYSDATE)";
+        $upd_stmt = oci_parse($conn, $upd_sql);
+        oci_execute($upd_stmt);
+    }
+    oci_commit($conn);
+    
+    // Mark as counted for this session
+    $_SESSION['visit_counted_date'] = $today_date;
+}
+
+
 // Fetch products with user info
 $search = "";
 if (isset($_GET['q'])) {
