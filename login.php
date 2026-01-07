@@ -25,10 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $row['ID']; 
                 $_SESSION['username'] = $row['USERNAME'];
                 $_SESSION['role'] = $row['ROLE']; 
-                $_SESSION['theme'] = $row['THEME'] ?? 'light-mode';
                 
-                // Sync cookie with account preference on login
-                setcookie('theme', $_SESSION['theme'], time() + (30 * 24 * 60 * 60), "/");
+                // Load Theme Preference from DB
+                $user_theme = $row['THEME'] ?? 'light-mode';
+                $_SESSION['theme'] = $user_theme;
+                
+                // Reset cookie to match account preference
+                setcookie('theme', $user_theme, time() + (30 * 24 * 60 * 60), "/");
                 
                 header("Location: index.php"); 
                 exit();
@@ -47,10 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $row['ID']; 
                 $_SESSION['username'] = $row['USERNAME'];
                 $_SESSION['role'] = $row['ROLE']; 
-                $_SESSION['theme'] = $row['THEME'] ?? 'light-mode';
                 
-                // Sync cookie with account preference on login
-                setcookie('theme', $_SESSION['theme'], time() + (30 * 24 * 60 * 60), "/");
+                // Load Theme Preference from DB
+                $user_theme = $row['THEME'] ?? 'light-mode';
+                $_SESSION['theme'] = $user_theme;
+                
+                // Reset cookie
+                setcookie('theme', $user_theme, time() + (30 * 24 * 60 * 60), "/");
                 
                 header("Location: index.php"); 
                 exit();
