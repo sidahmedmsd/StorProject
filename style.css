@@ -230,8 +230,12 @@ button:active {
 }
 
 .product:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-10px) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25) !important;
+    z-index: 10;
+    cursor: pointer;
+    border: 1px solid var(--primary-color);
+    /* Add border to make it obvious */
 }
 
 .product h3 {
@@ -434,4 +438,163 @@ input:checked+.slider:before {
         max-width: 100%;
         margin: 0;
     }
+}
+
+/* Login Page Split Layout */
+.login-body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--card-bg);
+    display: block !important;
+    /* Override global flex definition */
+}
+
+.login-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.login-image-section {
+    flex: 1.2;
+    /* Takes slightly more than half width */
+    position: relative;
+    overflow: hidden;
+    display: none;
+    /* Hidden on mobile */
+    background-color: #ffffff;
+    /* Assuming white background for logo */
+}
+
+@media (min-width: 900px) {
+    .login-image-section {
+        display: block;
+    }
+}
+
+.login-image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Changed to contain to show full logo */
+    object-position: center;
+    padding: 20px;
+    /* Add breathing room for the logo */
+}
+
+/* Optional: Overlay might obscure the logo if it's white. Let's make it very subtle or remove if using contain. */
+.login-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.05), rgba(0, 0, 0, 0.1));
+    pointer-events: none;
+}
+
+.login-form-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    background: var(--card-bg);
+    position: relative;
+    overflow-y: auto;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
+    /* subtle separator shadow */
+}
+
+.login-form-container {
+    width: 100%;
+    max-width: 420px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-form-container h2 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    text-align: left;
+    color: var(--primary-color);
+}
+
+.login-subtitle {
+    display: block;
+    color: var(--secondary-text);
+    margin-bottom: 40px;
+    font-size: 1rem;
+}
+
+.login-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.login-form-container input {
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    padding: 16px;
+    font-size: 1rem;
+    border-radius: 8px;
+    width: 100%;
+    transition: all 0.3s;
+}
+
+.login-form-container input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
+}
+
+.login-form-container button {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+.login-form-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+    background: var(--secondary-color);
+}
+
+.login-footer {
+    text-align: left;
+    margin-top: 25px;
+    color: var(--secondary-text);
+    font-size: 0.95rem;
+}
+
+.login-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
 }

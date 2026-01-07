@@ -53,28 +53,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account - MSD Store</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>">
 </head>
-<body class="<?php echo $theme_class; ?>">
+<body class="login-body <?php echo $theme_class; ?>">
 
-<div class="container">
-    <h2>Create New Account</h2>
-    
-    <?php if($error): ?>
-        <div style="color: red; text-align: center; margin-bottom: 15px;"><?php echo $error; ?></div>
-    <?php endif; ?>
+<div class="login-wrapper">
+    <!-- Image Section -->
+    <div class="login-image-section">
+        <div class="login-image-overlay"></div>
+        <img src="photo_2026-01-07_20-21-55.jpg" alt="Register Visual">
+    </div>
 
-    <form action="register.php" method="post" novalidate>
-        <input type="text" name="username" placeholder="Username" required value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>">
-        <input type="email" name="email" placeholder="Email" required value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
-        <input type="text" name="phone" placeholder="Phone Number" required value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>">
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
-        <button type="submit">Register</button>
-    </form>
-    <p style="text-align:center; margin-top:15px;">
-        Already have an account? <a href="login.php" style="color:var(--primary-color)">Login</a>
-    </p>
+    <!-- Form Section -->
+    <div class="login-form-section">
+        <div class="login-form-container">
+            <h2>Create New Account</h2>
+            <span class="login-subtitle">Join us to explore our products</span>
+
+            <?php if($error): ?>
+                <div class="error-message shake" style="color: #e74c3c; background: #fceae9; padding: 10px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #e74c3c;">
+                    <?php echo $error; ?>
+                </div>
+            <?php endif; ?>
+
+            <form action="register.php" method="post" novalidate>
+                <input type="text" name="username" placeholder="Username" required value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>">
+                <input type="email" name="email" placeholder="Email" required value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+                <input type="text" name="phone" placeholder="Phone Number" required value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>">
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+
+            <div class="login-footer">
+                Already have an account? <a href="login.php">Login</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
