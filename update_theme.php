@@ -5,15 +5,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $theme = $data['theme'] ?? 'light-mode';
     
-    // Validate
+    
     if ($theme !== 'light-mode' && $theme !== 'dark-mode') {
         $theme = 'light-mode';
     }
 
-    // 1. Always set cookie (client-side persistence)
+
     setcookie('theme', $theme, time() + (30 * 24 * 60 * 60), "/");
 
-    // 2. If logged in, update database (server-side persistence)
+        
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
         

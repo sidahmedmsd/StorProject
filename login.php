@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $user_theme = $row['THEME'] ?? 'light-mode';
                 $_SESSION['theme'] = $user_theme;
                 
-                // Reset cookie to match account preference
+                
                 setcookie('theme', $user_theme, time() + (30 * 24 * 60 * 60), "/");
                 
                 header("Location: index.php"); 

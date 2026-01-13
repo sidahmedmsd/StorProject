@@ -2,7 +2,7 @@
 include 'db.php';
 
 
-// If user is already logged in, redirect to index
+
 if (isset($_SESSION['username'])) {
     header("Location: index.php");
     exit();
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($password !== $confirm_password) {
         $error = "Passwords do not match";
     } else {
-        // Check if username unique
+       
         $check_sql = "SELECT COUNT(*) AS CNT FROM users WHERE username = :u";
         $check_stmt = oci_parse($conn, $check_sql);
         oci_bind_by_name($check_stmt, ":u", $username);
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             oci_bind_by_name($stmt, ":ph", $phone);
 
             if (@oci_execute($stmt)) {
-                oci_commit($conn); // IMPORTANT for Oracle
+                oci_commit($conn);
                 header("Location: login.php");
                 exit();
             } else {
@@ -65,13 +65,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="login-body <?php echo $theme_class; ?>">
 
 <div class="login-wrapper">
-    <!-- Image Section -->
+   
     <div class="login-image-section">
         <div class="login-image-overlay"></div>
         <img src="photo_2026-01-07_20-21-55.jpg" alt="Register Visual">
     </div>
 
-    <!-- Form Section -->
+    
     <div class="login-form-section">
         <div class="login-form-container">
             <h2>Create New Account</h2>

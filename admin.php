@@ -7,7 +7,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     exit();
 }
 
-// Handle Approval
+// Approval
 if (isset($_GET['approve'])) {
     $id = $_GET['approve'];
     $sql = "UPDATE products SET approved = 1 WHERE id = :id";
@@ -18,7 +18,7 @@ if (isset($_GET['approve'])) {
     exit();
 }
 
-// Handle Delete/Reject
+
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $sql = "DELETE FROM products WHERE id = :id";
@@ -31,12 +31,10 @@ if (isset($_GET['delete'])) {
 
 
 
-// Fetch Pending Products
 $sql = "SELECT * FROM products WHERE approved = 0";
 $stmt = oci_parse($conn, $sql);
 oci_execute($stmt);
 
-// Fetch All Users
 
 ?>
 <!DOCTYPE html>
@@ -54,7 +52,9 @@ oci_execute($stmt);
         <h2>Products Pending Approval</h2>
         <div>
             <a href="admin_users.php" class="btn-edit" style="margin-right:10px;">👥 Users</a>
+            <?php if ( $_SESSION['role'] === 'superadmin'): ?>
             <a href="admin_stats.php" class="btn-edit" style="margin-right:10px;">📊 Statistics</a>
+            <?php endif; ?>
             <a href="index.php" class="btn-logout" style="background:#555;">Back to Store</a>
         </div>
     </div>
@@ -72,8 +72,7 @@ oci_execute($stmt);
             echo '<h3>' . htmlspecialchars($row['TITLE']) . '</h3>';
             echo '<p>' . htmlspecialchars($row['DESCRIPTION']) . ' - <strong>' . htmlspecialchars($row['PRICE']) . ' DA</strong></p>';
             echo '</div>';
-            echo '<div style="display:flex; gap:10px; align-items:center;">';
-            echo '<a href="product_details.php?id=' . $row['ID'] . '" target="_blank" style="color:#3498db; text-decoration:none; font-weight:bold;">View</a>';
+            echo '<div style="display:flex; gap:10px; align-items:center;">'; 
             echo '<a href="admin.php?approve=' . $row['ID'] . '" style="background:#2ecc71; color:white; padding:5px 10px; border-radius:5px; text-decoration:none;">Approve</a>';
             echo '<a href="admin.php?delete=' . $row['ID'] . '" style="background:#e74c3c; color:white; padding:5px 10px; border-radius:5px; text-decoration:none;">Reject</a>';
             echo '</div>';

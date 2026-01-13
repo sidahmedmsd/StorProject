@@ -1,11 +1,11 @@
 <?php
 include 'db.php';
 
-// Track Visits (Once per session per day)
+// One per session per day
 $today_date = date('Y-m-d');
 if (!isset($_SESSION['visit_counted_date']) || $_SESSION['visit_counted_date'] !== $today_date) {
     
-    // Oracle TRUNC(SYSDATE) matches strictly date part, but easier to use MERGE or checking existence
+    
     $check_sql = "SELECT count(*) AS C FROM daily_visits WHERE visit_date = TRUNC(SYSDATE)";
     $check_stmt = oci_parse($conn, $check_sql);
     oci_execute($check_stmt);

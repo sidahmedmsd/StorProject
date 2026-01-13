@@ -1,7 +1,7 @@
 <?php
 include 'db.php';
 
-// Ensure user is logged in
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -18,13 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($title) || empty($desc) || empty($price)) {
         $message = '<div style="color:red">Please fill in all fields</div>';
     } else {
-        // Determine approval status logic
+       
         $approved = 0;
         if (isset($_SESSION['role']) && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'superadmin')) {
             $approved = 1;
         }
 
-        // 1. Insert Product first to get ID
+       
         $sql = "INSERT INTO products (user_id, title, description, price, approved, image)
                 VALUES (:userid, :title, :descr, :price, :appr, 'temp') RETURNING id INTO :prod_id";
         
@@ -40,11 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         oci_bind_by_name($stmt, ":prod_id", $new_product_id, 32);
 
         if (oci_execute($stmt)) {
-            // Product inserted, now handle images
+            
             $uploadDir = 'uploads/';
             if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
-            $firstImage = ''; // Will be set as main image
+            $firstImage = ''; 
             
             if (isset($_FILES['images'])) {
                 $fileCount = count($_FILES['images']['name']);
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $targetFile = $uploadDir . $fileName;
                         
                         if (move_uploaded_file($_FILES['images']['tmp_name'][$i], $targetFile)) {
-                            // Insert into product_images
+                           
                             $sql_img = "INSERT INTO product_images (product_id, image_path) VALUES (:pid, :path)";
                             $stmt_img = oci_parse($conn, $sql_img);
                             oci_bind_by_name($stmt_img, ":pid", $new_product_id);
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
             
-            // Update main product image if we have one
+            /
             if ($firstImage != '') {
                 $sql_update = "UPDATE products SET image = :img WHERE id = :pid";
                 $stmt_up = oci_parse($conn, $sql_update);

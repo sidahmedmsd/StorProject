@@ -31,7 +31,7 @@ if (isset($_GET['remove_admin']) && $_SESSION['role'] === 'superadmin') {
     exit();
 }
 
-// Fetch All Users with Search and Promoter Info
+
 $search_user = "";
 $query_cond = "";
 if (isset($_GET['search_user']) && !empty(trim($_GET['search_user']))) {
@@ -86,7 +86,7 @@ oci_execute($stmt_users);
             echo '<h3>' . htmlspecialchars($user['USERNAME']) . '</h3>';
             echo '<p>' . htmlspecialchars($user['EMAIL']) . ' - Role: <strong>' . htmlspecialchars($user['ROLE']) . '</strong>';
             
-            // Show promoter info for Super Admin
+            
             if ($_SESSION['role'] === 'superadmin' && $user['ROLE'] === 'admin' && !empty($user['PROMOTER_NAME'])) {
                 echo '<br><span style="font-size:0.9em; color:#e67e22;">Promoted by: ' . htmlspecialchars($user['PROMOTER_NAME']) . '</span>';
             }

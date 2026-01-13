@@ -1,8 +1,8 @@
 <?php
 include 'db.php';
 
-// Check permissions
-if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'superadmin')) {
+
+if ( $_SESSION['role'] !== 'superadmin') {
     header("Location: index.php");
     exit();
 }
@@ -10,12 +10,10 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
 $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-d', strtotime('-30 days'));
 $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
 
-// Convert for Oracle
-// We'll wrap date strings in TO_DATE logic in query
+
 $sd = date('d-M-y', strtotime($start_date));
 $ed = date('d-M-y', strtotime($end_date));
 
-// 1. New Users Count
 $sql_users = "SELECT COUNT(*) as CNT FROM users WHERE TRUNC(created_at) BETWEEN TO_DATE(:sd, 'DD-MON-RR') AND TO_DATE(:ed, 'DD-MON-RR')";
 $stmt_users = oci_parse($conn, $sql_users);
 oci_bind_by_name($stmt_users, ":sd", $sd);
@@ -79,7 +77,7 @@ $visit_count = $visit_row['CNT'] ? $visit_row['CNT'] : 0;
         @media print {
             @page { margin: 0; }
             body { margin: 1.6cm; }
-            .no-print { display: none; }
+            .no-print { display: none !important; }
             body { background: white; color: black; }
             .card, .container { box-shadow: none; border: none; }
         }
@@ -87,9 +85,9 @@ $visit_count = $visit_row['CNT'] ? $visit_row['CNT'] : 0;
 </head>
 <body class="<?php echo $theme_class; ?>">
 
-<div class="container" style="max-width: 900px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-        <h2>📊 Site Statistics</h2>
+<div class="container " style="max-width: 900px;">
+    <div class="" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2 class="">📊 Site Statistics</h2>
         <div class="no-print" style="display:flex; gap:10px; align-items:center;">
             <a href="admin.php" class="btn-logout" style="background:#555; margin:0; display:inline-flex; align-items:center; justify-content:center; height:40px; padding: 0 20px; white-space: nowrap;">Back to Admin</a>
             <button onclick="window.print()" class="btn-add" style="background:#8e44ad; margin:0; display:inline-flex; align-items:center; justify-content:center; height:40px; padding: 0 20px; white-space: nowrap;">🖨️ PDF / Print</button>
